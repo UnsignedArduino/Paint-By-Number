@@ -14,6 +14,6 @@ export const HeadComponentFactory = (pageTitle?: string): HeadFC => {
       );
     }
   );
-}
+};
 
 export default HeadComponentFactory;

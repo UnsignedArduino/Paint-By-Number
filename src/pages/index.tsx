@@ -1,15 +1,17 @@
 import * as React from "react";
 import type { HeadFC } from "gatsby";
 import HeadComponentFactory from "../components/Head";
+import LayoutComponent from "../components/Layout/layout";
 
 const pageTitle: string = "Home";
 
 const IndexPage = (): React.ReactElement => {
   return (
-    <>
-    </>
+    <LayoutComponent>
+    
+    </LayoutComponent>
   );
-}
+};
 
 export default IndexPage;
 
