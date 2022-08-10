@@ -2,6 +2,8 @@ import * as React from "react";
 import type { HeadFC } from "gatsby";
 import HeadComponentFactory from "../components/Head";
 
+const pageTitle: string = "Home";
+
 const IndexPage = (): React.ReactElement => {
   return (
     <>
@@ -11,4 +13,4 @@ const IndexPage = (): React.ReactElement => {
 
 export default IndexPage;
 
-export const Head: HeadFC = HeadComponentFactory("Home");
+export const Head: HeadFC = HeadComponentFactory(pageTitle);
