@@ -19,6 +19,9 @@ const NavbarComponent = ({ selected }: NavbarComponentParameterType): React.Reac
   return (
     <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
       <div className="container-fluid">
+        <div className="container-fluid-sm">
+          <a className="navbar-brand" href="/">Paint by Number</a>
+        </div>
         <ul className="navbar-nav">
           {
             Object.keys(NavbarLink).filter(
