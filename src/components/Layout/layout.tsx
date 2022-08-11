@@ -12,8 +12,10 @@ const LayoutComponent = ({ children, currentPage }: LayoutComponentParameterType
   return (
     <>
       <main>
-      <NavbarComponent selected={currentPage}/>
-        {children}
+        <NavbarComponent selected={currentPage}/>
+        <div className="container-fluid p-3">
+          {children}
+        </div>
       </main>
     </>
   );

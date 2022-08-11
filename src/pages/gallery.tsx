@@ -8,7 +8,7 @@ const currentPage: NavbarLink = NavbarLink.Gallery;
 
 const pageTitle: string = NavbarLink[currentPage];
 
-const IndexPage = (): React.ReactElement => {
+const GalleryPage = (): React.ReactElement => {
   return (
     <LayoutComponent currentPage={ currentPage }>
     
@@ -16,6 +16,6 @@ const IndexPage = (): React.ReactElement => {
   );
 };
 
-export default IndexPage;
+export default GalleryPage;
 
 export const Head: HeadFC = HeadComponentFactory(pageTitle);
