@@ -10,7 +10,8 @@ const currentPage: NavbarLink = -1;
 const pageTitle: string = "";
 
 const PaintPage = (): React.ReactElement => {
-  const sketchElementId: string = "paintSketch";
+  // TODO: Figure out how to make node argument to p5 constructor happy
+  const sketchElementId: any = "paintSketch";
 
   new p5((sketch: p5) => {
     const resizeCanvas = () => {
@@ -27,7 +28,7 @@ const PaintPage = (): React.ReactElement => {
       const newHeight: number =
         window.innerHeight -
         (sketchParent.scrollHeight - window.innerHeight) -
-        (navbar?.offsetHeight | 0);
+        (navbar?.offsetHeight ?? 0);
 
       console.log("Fitting to " + newWidth + ", " + newHeight);
 
