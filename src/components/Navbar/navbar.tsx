@@ -6,6 +6,8 @@ export enum NavbarLink {
   Gallery,
 }
 
+export const navbarID = "navbar";
+
 const navbarLinks: string[] = ["/", "/gallery"];
 
 type NavbarComponentParameterType = {
@@ -16,7 +18,7 @@ const NavbarComponent = ({
   selected,
 }: NavbarComponentParameterType): React.ReactElement => {
   return (
-    <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
+    <nav className="navbar navbar-expand-sm bg-dark navbar-dark" id={navbarID}>
       <div className="container-fluid">
         <div className="container-fluid-sm">
           <a className="navbar-brand" href="/">
@@ -40,7 +42,7 @@ const NavbarComponent = ({
               .map((value: string, index: number) => {
                 if (selected === index) {
                   return (
-                    <li className="nav-item">
+                    <li className="nav-item" key={value}>
                       <Link className="nav-link active" to={navbarLinks[index]}>
                         {value}
                       </Link>
@@ -48,7 +50,7 @@ const NavbarComponent = ({
                   );
                 } else {
                   return (
-                    <li className="nav-item">
+                    <li className="nav-item" key={value}>
                       <Link className="nav-link" to={navbarLinks[index]}>
                         {value}
                       </Link>

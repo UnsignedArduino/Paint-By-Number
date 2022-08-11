@@ -1,1 +1,1 @@
-export { default, NavbarLink } from "./navbar";
+export { default, NavbarLink, navbarID } from "./navbar";
