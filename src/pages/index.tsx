@@ -6,7 +6,7 @@ import { NavbarLink } from "../components/Navbar";
 
 const currentPage: NavbarLink = NavbarLink.Home;
 
-const pageTitle: string = currentPage.toString();
+const pageTitle: string = NavbarLink[currentPage];
 
 const IndexPage = (): React.ReactElement => {
   return (
