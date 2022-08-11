@@ -4,7 +4,7 @@ import HeadComponentFactory from "../components/Head";
 import LayoutComponent from "../components/Layout/layout";
 import { NavbarLink } from "../components/Navbar";
 
-const currentPage: NavbarLink = NavbarLink.Home;
+const currentPage: NavbarLink = NavbarLink.Gallery;
 
 const pageTitle: string = currentPage.toString();
 
