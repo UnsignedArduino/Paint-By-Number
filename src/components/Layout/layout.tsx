@@ -8,14 +8,15 @@ type LayoutComponentParameterType = {
   currentPage?: NavbarLink;
 };
 
-const LayoutComponent = ({ children, currentPage }: LayoutComponentParameterType): React.ReactElement => {
+const LayoutComponent = ({
+  children,
+  currentPage,
+}: LayoutComponentParameterType): React.ReactElement => {
   return (
     <>
       <main>
-        <NavbarComponent selected={currentPage}/>
-        <div className="container-fluid p-2">
-          {children}
-        </div>
+        <NavbarComponent selected={currentPage} />
+        <div className="container-fluid p-2">{children}</div>
       </main>
     </>
   );

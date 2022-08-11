@@ -10,7 +10,7 @@ const pageTitle: string = "Page not found";
 
 const GalleryPage = (): React.ReactElement => {
   return (
-    <LayoutComponent currentPage={ currentPage }>
+    <LayoutComponent currentPage={currentPage}>
       <h1>Page not found</h1>
       <p>Sorry, there's nothing here.</p>
     </LayoutComponent>

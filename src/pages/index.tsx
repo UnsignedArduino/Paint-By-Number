@@ -10,8 +10,8 @@ const pageTitle: string = NavbarLink[currentPage];
 
 const IndexPage = (): React.ReactElement => {
   return (
-    <LayoutComponent currentPage={ currentPage }>
-    
+    <LayoutComponent currentPage={currentPage}>
+      <></>
     </LayoutComponent>
   );
 };
