@@ -2,6 +2,7 @@ import * as React from "react";
 import type { HeadFC } from "gatsby";
 import HeadComponentFactory from "../components/Head";
 import LayoutComponent from "../components/Layout/layout";
+import SketchWrapper from "../components/SketchWrapper";
 import { NavbarLink, navbarID } from "../components/Navbar";
 import p5 from "p5";
 
@@ -10,10 +11,9 @@ const currentPage: NavbarLink = -1;
 const pageTitle: string = "";
 
 const PaintPage = (): React.ReactElement => {
-  // TODO: Figure out how to make node argument to p5 constructor happy
-  const sketchElementId: any = "paintSketch";
+  const sketchElementId: string = "paintSketch";
 
-  new p5((sketch: p5) => {
+  const sketchFunc: (sketch: p5) => void = (sketch: p5) => {
     const resizeCanvas = () => {
       const sketchParent: HTMLElement =
         sketch.drawingContext.canvas.parentElement;
@@ -40,6 +40,8 @@ const PaintPage = (): React.ReactElement => {
       resizeCanvas();
     };
 
+    let i = 0;
+
     sketch.draw = () => {
       sketch.background(0);
 
@@ -52,14 +54,11 @@ const PaintPage = (): React.ReactElement => {
     sketch.windowResized = () => {
       resizeCanvas();
     };
-  }, sketchElementId);
+  };
 
   return (
     <LayoutComponent currentPage={currentPage} putInDIV={false}>
-      <div
-        id={sketchElementId}
-        className="container-fluid p-2 flex-grow-1"
-      ></div>
+      <SketchWrapper sketchFunc={sketchFunc} canvasID={sketchElementId} />
     </LayoutComponent>
   );
 };
