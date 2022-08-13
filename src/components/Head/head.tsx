@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { HeadFC } from "gatsby";
 
-export const HeadComponentFactory = (pageTitle?: string): HeadFC => {
+const HeadComponentFactory = (pageTitle?: string): HeadFC => {
   return () => {
     return (
       <>
