@@ -12,12 +12,9 @@ const SketchWrapper = ({
   canvasID,
 }: SketchWrapperParameterTypes): React.ReactElement => {
   React.useEffect(() => {
-    console.info("Starting paint sketch");
-
     const sketch = new p5(sketchFunc, canvasID);
 
     return () => {
-      console.warn("Stopping paint sketch");
       sketch.remove();
     };
   }, []);
