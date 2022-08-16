@@ -16,17 +16,15 @@ const LayoutComponent = ({
 }: LayoutComponentParameterType): React.ReactElement => {
   return (
     <>
+      <NavbarComponent selected={currentPage} />
       <main>
-        <>
-          <NavbarComponent selected={currentPage} />
-          {(() => {
-            if (putInDIV == undefined || putInDIV) {
-              return <div className="container-fluid p-2">{children}</div>;
-            } else {
-              return children;
-            }
-          })()}
-        </>
+        {(() => {
+          if (putInDIV == undefined || putInDIV) {
+            return <div className="container-fluid p-2">{children}</div>;
+          } else {
+            return children;
+          }
+        })()}
       </main>
     </>
   );
