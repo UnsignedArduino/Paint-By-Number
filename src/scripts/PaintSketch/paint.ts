@@ -1,5 +1,28 @@
 import { navbarID } from "../../components/Navbar";
 import p5 from "p5";
+import p5Thing from "../p5Thing";
+import PaintSketchStyle from "../PaintSketchStyle";
+
+class PaintSketch extends p5Thing {
+  style: PaintSketchStyle;
+
+  constructor(sketch: p5) {
+    super(sketch);
+    this.style = new PaintSketchStyle(this.sketch);
+  }
+
+  update() {
+    super.update();
+    this.style.update();
+  }
+
+  draw() {
+    super.draw();
+    this.style.draw();
+
+    this.sketch.background(this.style.bgColor);
+  }
+}
 
 const PaintSketchFactory = () => {
   return (sketch: p5) => {
@@ -24,18 +47,23 @@ const PaintSketchFactory = () => {
       sketch.resizeCanvas(newWidth, newHeight);
     };
 
+    let paintSketch: PaintSketch | undefined = undefined;
+
     sketch.setup = () => {
       sketch.createCanvas(100, 100);
       resizeCanvas();
+
+      paintSketch = new PaintSketch(sketch);
     };
 
     sketch.draw = () => {
-      sketch.background(0);
-
-      sketch.push();
-      sketch.fill(255);
-      sketch.circle(sketch.mouseX, sketch.mouseY, 10);
-      sketch.pop();
+      if (!paintSketch) {
+        throw new TypeError(
+          "Paint sketch has not been initalized, yet drawing has started!"
+        );
+      }
+      paintSketch.update();
+      paintSketch.draw();
     };
 
     sketch.windowResized = () => {
