@@ -18,7 +18,7 @@ const PaintPage = (): React.ReactElement => {
 
   return (
     <LayoutComponent currentPage={currentPage} putInDIV={false}>
-      <SketchWrapper sketchFunc={sketchFunc} canvasID={sketchElementId} />
+      <SketchWrapper sketchFunc={sketchFunc} />
     </LayoutComponent>
   );
 };
