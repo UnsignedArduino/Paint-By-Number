@@ -62,8 +62,6 @@ class PaintSketch extends p5Thing {
         this.newImg = result.image;
         this.colors = result.colors;
 
-        this.newImg.resize(0, this.sketch.height);
-
         this.state = PaintSketchStates.Painting;
       },
       () => {
@@ -117,7 +115,7 @@ class PaintSketch extends p5Thing {
         break;
       }
       case PaintSketchStates.Painting: {
-        this.sketch.image(this.newImg!, 0, 0);
+        this.sketch.image(this.newImg!, 0, 0); // temporary
       }
       case PaintSketchStates.Finished: {
         break;
