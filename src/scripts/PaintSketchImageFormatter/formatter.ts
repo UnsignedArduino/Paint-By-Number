@@ -1,4 +1,5 @@
 import p5 from "p5";
+import { buildPaletteSync, applyPaletteSync, utils } from "image-q";
 
 interface PaintSketchImageFormatterResult {
   image: p5.Image;
@@ -41,11 +42,21 @@ export class PaintSketchImageFormatter {
   }
 
   private quantifyImage(img: p5.Image, colors: number): void {
-    const colorsPerChannel = Math.pow(colors, 1 / 3);
-    console.log(
-      `Quantifying to ${colors} colors (${colorsPerChannel} unique values per channel)`
+    console.log(`Quantifying to ${colors} colors`);
+    img.loadPixels();
+    const inPointContainer = utils.PointContainer.fromImageData(
+      new ImageData(Uint8ClampedArray.from(img.pixels), img.width, img.height)
     );
-    img.filter(this.sketch.POSTERIZE, colorsPerChannel);
+    const palette = buildPaletteSync([inPointContainer], { colors: colors });
+    const outPointContainer = applyPaletteSync(inPointContainer, palette);
+    const data = Array.from(outPointContainer.toUint8Array());
+    // img.pixels = data; // Doesn't work!!!
+    // Can't assign an array directly to img.pixels
+    // https://github.com/processing/p5.js/issues/4993
+    for (let i = 0; i < data.length; i++) {
+      img.pixels[i] = data[i];
+    }
+    img.updatePixels();
   }
 
   private getUniqueColors(img: p5.Image): p5.Color[] {
