@@ -4,7 +4,7 @@ import p5Thing from "../p5Thing";
 const bgColor: string = "white";
 
 const zoomSensitivity: number = 0.1;
-const zoomMin = -0.99;
+const zoomMin = 0.1;
 const zoomMax = 8;
 
 export class PaintSketchStyle extends p5Thing {

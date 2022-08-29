@@ -1,6 +1,6 @@
 import { navbarID } from "../../components/Navbar";
 import p5 from "p5";
-import p5Thing, { p5TestingRect } from "../p5Thing";
+import p5Thing, { p5ImageThing, p5TestingRectThing } from "../p5Thing";
 import PaintSketchStyle from "../PaintSketchStyle";
 import PaintSketchImageFormatter from "../PaintSketchImageFormatter";
 
@@ -48,8 +48,8 @@ class PaintSketch extends p5Thing {
     this.zoom = 1;
 
     this.p5things = [];
-    // For testing
-    this.p5things.push(new p5TestingRect(this.sketch));
+    // // For testing
+    // this.p5things.push(new p5TestingRectThing(this.sketch));
 
     this.style = new PaintSketchStyle(this.sketch);
 
@@ -74,6 +74,9 @@ class PaintSketch extends p5Thing {
 
         this.newImg = result.image;
         this.colors = result.colors;
+
+        // For testing
+        this.p5things.push(new p5ImageThing(this.sketch, this.newImg));
 
         this.state = PaintSketchStates.Painting;
       },
