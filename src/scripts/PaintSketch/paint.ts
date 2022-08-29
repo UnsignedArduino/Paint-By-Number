@@ -37,6 +37,7 @@ class PaintSketch extends p5Thing {
   private colors?: p5.Color[];
 
   private camera: p5.Vector;
+  private zoom: number;
 
   private p5things: p5Thing[];
 
@@ -44,6 +45,7 @@ class PaintSketch extends p5Thing {
     super(sketch);
 
     this.camera = this.sketch.createVector(0, 0);
+    this.zoom = 1;
 
     this.p5things = [];
     // For testing
@@ -140,6 +142,7 @@ class PaintSketch extends p5Thing {
 
     this.sketch.push();
     this.sketch.translate(this.camera);
+    this.sketch.scale(this.zoom);
 
     this.sketch.background(this.style.bgColor);
 
@@ -165,8 +168,35 @@ class PaintSketch extends p5Thing {
     return true;
   }
 
-  mouseWheel(): boolean {
-    return true;
+  mouseWheel(event: WheelEvent): boolean {
+    let scale_factor: number;
+
+    if (event.deltaY > 0) {
+      scale_factor = 1 - this.style.zoomSensitivity;
+    } else {
+      scale_factor = 1 + this.style.zoomSensitivity;
+    }
+
+    // https://stackoverflow.com/a/70660569/10291933
+
+    const new_zoom: number = this.zoom * scale_factor;
+    if (new_zoom > this.style.zoomMin && new_zoom < this.style.zoomMax) {
+      this.zoom *= scale_factor;
+      this.zoom = Math.min(
+        Math.max(this.zoom, this.style.zoomMin),
+        this.style.zoomMax
+      );
+
+      this.camera.x =
+        this.sketch.mouseX -
+        this.sketch.mouseX * scale_factor +
+        this.camera.x * scale_factor;
+      this.camera.y =
+        this.sketch.mouseY -
+        this.sketch.mouseY * scale_factor +
+        this.camera.y * scale_factor;
+    }
+    return false;
   }
 }
 
@@ -228,8 +258,8 @@ const PaintSketchFactory = () => {
       return paintSketch?.mouseReleased();
     };
 
-    sketch.mouseWheel = () => {
-      return paintSketch?.mouseWheel();
+    sketch.mouseWheel = (event: WheelEvent) => {
+      return paintSketch?.mouseWheel(event);
     };
   };
 };
