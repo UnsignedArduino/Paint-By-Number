@@ -1,6 +1,6 @@
 import { navbarID } from "../../components/Navbar";
 import p5 from "p5";
-import p5Thing from "../p5Thing";
+import p5Thing, { p5TestingRect } from "../p5Thing";
 import PaintSketchStyle from "../PaintSketchStyle";
 import PaintSketchImageFormatter from "../PaintSketchImageFormatter";
 
@@ -36,8 +36,19 @@ class PaintSketch extends p5Thing {
   private newImg?: p5.Image;
   private colors?: p5.Color[];
 
+  private camera: p5.Vector;
+
+  private p5things: p5Thing[];
+
   constructor(sketch: p5) {
     super(sketch);
+
+    this.camera = this.sketch.createVector(0, 0);
+
+    this.p5things = [];
+    // For testing
+    this.p5things.push(new p5TestingRect(this.sketch));
+
     this.style = new PaintSketchStyle(this.sketch);
 
     this.state = PaintSketchStates.Loading;
@@ -102,20 +113,13 @@ class PaintSketch extends p5Thing {
   update() {
     super.update();
     this.style.update();
-  }
-
-  draw() {
-    super.draw();
-    this.style.draw();
-
-    this.sketch.background(this.style.bgColor);
 
     switch (this.state) {
       case PaintSketchStates.Loading: {
         break;
       }
       case PaintSketchStates.Painting: {
-        this.sketch.image(this.newImg!, 0, 0); // temporary
+        break;
       }
       case PaintSketchStates.Finished: {
         break;
@@ -124,6 +128,45 @@ class PaintSketch extends p5Thing {
         break;
       }
     }
+
+    for (const thing of this.p5things) {
+      thing.update();
+    }
+  }
+
+  draw() {
+    super.draw();
+    this.style.draw();
+
+    this.sketch.push();
+    this.sketch.translate(this.camera);
+
+    this.sketch.background(this.style.bgColor);
+
+    for (const thing of this.p5things) {
+      thing.draw();
+    }
+
+    this.sketch.pop();
+  }
+
+  mousePressed(): boolean {
+    return true;
+  }
+
+  mouseDragged(): boolean {
+    this.camera.add(
+      this.sketch.createVector(this.sketch.movedX, this.sketch.movedY)
+    );
+    return false;
+  }
+
+  mouseReleased(): boolean {
+    return true;
+  }
+
+  mouseWheel(): boolean {
+    return true;
   }
 }
 
@@ -171,6 +214,22 @@ const PaintSketchFactory = () => {
 
     sketch.windowResized = () => {
       resizeCanvas();
+    };
+
+    sketch.mousePressed = () => {
+      return paintSketch?.mousePressed();
+    };
+
+    sketch.mouseDragged = () => {
+      return paintSketch?.mouseDragged();
+    };
+
+    sketch.mouseReleased = () => {
+      return paintSketch?.mouseReleased();
+    };
+
+    sketch.mouseWheel = () => {
+      return paintSketch?.mouseWheel();
     };
   };
 };
