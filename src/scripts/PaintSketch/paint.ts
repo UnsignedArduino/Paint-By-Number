@@ -186,10 +186,10 @@ class PaintSketch extends p5Thing {
     return true;
   }
 
-  mouseWheel(event: WheelEvent): boolean {
+  mouseWheel(deltaY: number): boolean {
     let scale_factor: number;
 
-    if (event.deltaY > 0) {
+    if (deltaY > 0) {
       scale_factor = 1 - this.style.zoomSensitivity;
     } else {
       scale_factor = 1 + this.style.zoomSensitivity;
@@ -265,6 +265,7 @@ const PaintSketchFactory = () => {
     };
 
     let lastTouch: Touch | undefined = undefined;
+    let last2Touches: Touch[] = [];
 
     sketch.mousePressed = () => {
       return paintSketch?.mousePressed();
@@ -273,6 +274,8 @@ const PaintSketchFactory = () => {
     sketch.touchStarted = (event: TouchEvent) => {
       if (event.touches.length === 1) {
         lastTouch = event.touches[0];
+      } else if (event.touches.length === 2) {
+        last2Touches = [event.touches[0], event.touches[1]];
       }
     };
 
@@ -293,6 +296,45 @@ const PaintSketchFactory = () => {
             return paintSketch?.mouseDragged(movedX, movedY);
           }
         }
+      } else if (event.touches.length === 2) {
+        const these2Touches: Touch[] = [event.touches[0], event.touches[1]];
+        if (last2Touches.length !== 2) {
+          last2Touches = [...these2Touches];
+        } else {
+          const idsAreSame = (
+            touches1: Touch[],
+            touches2: Touch[]
+          ): boolean => {
+            if (touches1.length !== touches2.length) {
+              return false;
+            } else {
+              for (let i = 0; i < touches1.length; i++) {
+                if (touches1[i].identifier !== touches2[i].identifier) {
+                  return false;
+                }
+              }
+              return true;
+            }
+          };
+
+          const distOf2Touches = (touches: Touch[]): number => {
+            if (touches.length !== 2) {
+              return 0;
+            } else {
+              return sketch
+                .createVector(touches[0].clientX, touches[0].clientY)
+                .dist(
+                  sketch.createVector(touches[1].clientX, touches[1].clientY)
+                );
+            }
+          };
+
+          if (idsAreSame(last2Touches, these2Touches)) {
+            return paintSketch?.mouseWheel(
+              distOf2Touches(last2Touches) - distOf2Touches(these2Touches)
+            );
+          }
+        }
       }
       return false;
     };
@@ -302,7 +344,7 @@ const PaintSketchFactory = () => {
     };
 
     sketch.mouseWheel = (event: WheelEvent) => {
-      return paintSketch?.mouseWheel(event);
+      return paintSketch?.mouseWheel(event.deltaY);
     };
   };
 };
