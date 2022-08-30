@@ -5,7 +5,7 @@ const bgColor: string = "white";
 
 const zoomSensitivity: number = 0.1;
 const zoomMin = 0.1;
-const zoomMax = 8;
+const zoomMax = 10;
 
 export class PaintSketchStyle extends p5Thing {
   readonly bgColor: p5.Color;

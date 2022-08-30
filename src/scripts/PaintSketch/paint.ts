@@ -1,9 +1,12 @@
 import { navbarID } from "../../components/Navbar";
 import p5 from "p5";
-import p5Thing, { p5ImageThing, p5TestingRectThing } from "../p5Thing";
+import p5Thing, {
+  calculateBoundingBox,
+  p5ImageThing,
+  RectangleXYWH,
+} from "../p5Thing";
 import PaintSketchStyle from "../PaintSketchStyle";
 import PaintSketchImageFormatter from "../PaintSketchImageFormatter";
-import { ReplacementsP5MovedXY } from "../Replacements/p5/movedXY";
 
 enum PaintSketchStates {
   Loading,
@@ -27,9 +30,6 @@ type PaintSketchRawURLParams = {
 };
 
 class PaintSketch extends p5Thing {
-  private moved: ReplacementsP5MovedXY;
-  private replacements: p5Thing[];
-
   private style: PaintSketchStyle;
 
   private state: PaintSketchStates;
@@ -44,12 +44,10 @@ class PaintSketch extends p5Thing {
   private zoom: number;
 
   private p5things: p5Thing[];
+  private boundingBox: RectangleXYWH | undefined;
 
   constructor(sketch: p5) {
     super(sketch);
-
-    this.moved = new ReplacementsP5MovedXY(this.sketch);
-    this.replacements = [this.moved];
 
     this.camera = this.sketch.createVector(0, 0);
     this.zoom = 1;
@@ -125,10 +123,6 @@ class PaintSketch extends p5Thing {
   update() {
     super.update();
 
-    for (const replacement of this.replacements) {
-      replacement.update();
-    }
-
     this.style.update();
 
     switch (this.state) {
@@ -149,14 +143,45 @@ class PaintSketch extends p5Thing {
     for (const thing of this.p5things) {
       thing.update();
     }
+
+    this.boundingBox = calculateBoundingBox(this.p5things);
+
+    const cameraLeftOffset: number =
+      this.camera.x + (this.boundingBox.width / 2) * this.zoom;
+    const cameraTopOffset: number =
+      this.camera.y + (this.boundingBox.height / 2) * this.zoom;
+    const cameraRightOffset: number =
+      this.boundingBox.x -
+      (this.boundingBox.width / 2) * this.zoom -
+      this.camera.x +
+      this.sketch.width;
+    const cameraBottomOffset: number =
+      this.boundingBox.y -
+      (this.boundingBox.height / 2) * this.zoom -
+      this.camera.y +
+      this.sketch.height;
+
+    // console.log({
+    //   cameraLeftOffset,
+    //   cameraTopOffset,
+    //   cameraRightOffset,
+    //   cameraBottomOffset,
+    // });
+
+    if (cameraLeftOffset < 0) {
+      this.camera.x += Math.abs(cameraLeftOffset) / 2;
+    } else if (cameraRightOffset < 0) {
+      this.camera.x -= Math.abs(cameraRightOffset) / 2;
+    }
+    if (cameraTopOffset < 0) {
+      this.camera.y += Math.abs(cameraTopOffset) / 2;
+    } else if (cameraBottomOffset < 0) {
+      this.camera.y -= Math.abs(cameraBottomOffset) / 2;
+    }
   }
 
   draw() {
     super.draw();
-
-    for (const replacement of this.replacements) {
-      replacement.draw();
-    }
 
     this.style.draw();
 
@@ -187,19 +212,19 @@ class PaintSketch extends p5Thing {
   }
 
   mouseWheel(deltaY: number): boolean {
-    let scale_factor: number;
+    let scaleFactor: number;
 
     if (deltaY > 0) {
-      scale_factor = 1 - this.style.zoomSensitivity;
+      scaleFactor = 1 - this.style.zoomSensitivity;
     } else {
-      scale_factor = 1 + this.style.zoomSensitivity;
+      scaleFactor = 1 + this.style.zoomSensitivity;
     }
 
     // https://stackoverflow.com/a/70660569/10291933
 
-    const new_zoom: number = this.zoom * scale_factor;
-    if (new_zoom > this.style.zoomMin && new_zoom < this.style.zoomMax) {
-      this.zoom *= scale_factor;
+    const newZoom: number = this.zoom * scaleFactor;
+    if (newZoom > this.style.zoomMin && newZoom < this.style.zoomMax) {
+      this.zoom *= scaleFactor;
       this.zoom = Math.min(
         Math.max(this.zoom, this.style.zoomMin),
         this.style.zoomMax
@@ -207,12 +232,12 @@ class PaintSketch extends p5Thing {
 
       this.camera.x =
         this.sketch.mouseX -
-        this.sketch.mouseX * scale_factor +
-        this.camera.x * scale_factor;
+        this.sketch.mouseX * scaleFactor +
+        this.camera.x * scaleFactor;
       this.camera.y =
         this.sketch.mouseY -
-        this.sketch.mouseY * scale_factor +
-        this.camera.y * scale_factor;
+        this.sketch.mouseY * scaleFactor +
+        this.camera.y * scaleFactor;
     }
     return false;
   }
