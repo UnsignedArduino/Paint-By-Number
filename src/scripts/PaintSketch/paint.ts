@@ -7,6 +7,10 @@ import p5Thing, {
 } from "../p5Thing";
 import PaintSketchStyle from "../PaintSketchSettings";
 import PaintSketchImageFormatter from "../PaintSketchImageFormatter";
+import {
+  PaintSketchParams,
+  PaintSketchParamsGetter,
+} from "../PaintSketchParams";
 
 enum PaintSketchStates {
   Loading,
@@ -14,20 +18,6 @@ enum PaintSketchStates {
   Finished,
   FatalError,
 }
-
-type PaintSketchParams = {
-  path: string;
-  width: number;
-  height: number;
-  colors: number;
-};
-
-type PaintSketchRawURLParams = {
-  path?: string;
-  width?: string;
-  height?: string;
-  colors?: string;
-};
 
 class PaintSketch extends p5Thing {
   private style: PaintSketchStyle;
@@ -60,7 +50,7 @@ class PaintSketch extends p5Thing {
 
     this.state = PaintSketchStates.Loading;
 
-    this.getAndVerifyParams();
+    this.params = new PaintSketchParamsGetter(this.sketch).getParams();
 
     this.originalImg = undefined;
     this.sketch.loadImage(
@@ -90,34 +80,6 @@ class PaintSketch extends p5Thing {
         throw new TypeError("Failed to get image!");
       }
     );
-  }
-
-  getAndVerifyParams(): void {
-    const params = <PaintSketchRawURLParams>this.sketch.getURLParams();
-
-    this.params = <PaintSketchParams>{};
-    this.params.path = params.path ?? "";
-    this.params.width = Number.parseInt(params.width ?? "0");
-    this.params.height = Number.parseInt(params.height ?? "0");
-    this.params.colors = Number.parseInt(params.colors ?? "0");
-
-    if (this.params.path == "") {
-      this.state = PaintSketchStates.FatalError;
-      throw new TypeError("No path to image has been provided!");
-    }
-    if (this.params.width == 0 && this.params.height == 0) {
-      this.state = PaintSketchStates.FatalError;
-      throw new TypeError("No width or height has been provided!");
-    }
-    if (this.params.colors == 0) {
-      this.state = PaintSketchStates.FatalError;
-      throw new TypeError("No color count has been provided!");
-    }
-
-    console.log("Path: " + this.params.path);
-    console.log("Width: " + this.params.width);
-    console.log("Height: " + this.params.height);
-    console.log("Colors: " + this.params.colors);
   }
 
   update() {
