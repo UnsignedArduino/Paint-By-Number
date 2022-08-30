@@ -4,8 +4,8 @@ import HeadComponentFactory from "../components/Head";
 import LayoutComponent from "../components/Layout/layout";
 import SketchWrapper from "../components/SketchWrapper";
 import { NavbarLink } from "../components/Navbar";
-import PaintSketchFactory from "../scripts/PaintSketch";
 import p5 from "p5";
+import PaintSketchFactory from "../scripts/PaintSketchFactory/factory";
 
 const currentPage: NavbarLink = -1;
 
