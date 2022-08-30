@@ -7,7 +7,7 @@ const zoomSensitivity: number = 0.1;
 const zoomMin = 0.1;
 const zoomMax = 10;
 
-export class PaintSketchStyle extends p5Thing {
+export class PaintSketchSettings extends p5Thing {
   readonly bgColor: p5.Color;
 
   readonly zoomSensitivity: number;
@@ -25,4 +25,4 @@ export class PaintSketchStyle extends p5Thing {
   }
 }
 
-export default PaintSketchStyle;
+export default PaintSketchSettings;

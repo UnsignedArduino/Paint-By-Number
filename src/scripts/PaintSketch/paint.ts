@@ -5,7 +5,7 @@ import p5Thing, {
   p5ImageThing,
   RectangleXYWH,
 } from "../p5Thing";
-import PaintSketchStyle from "../PaintSketchStyle";
+import PaintSketchStyle from "../PaintSketchSettings";
 import PaintSketchImageFormatter from "../PaintSketchImageFormatter";
 
 enum PaintSketchStates {
