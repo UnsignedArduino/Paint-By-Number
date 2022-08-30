@@ -3,6 +3,7 @@ import p5 from "p5";
 import p5Thing, { p5ImageThing, p5TestingRectThing } from "../p5Thing";
 import PaintSketchStyle from "../PaintSketchStyle";
 import PaintSketchImageFormatter from "../PaintSketchImageFormatter";
+import { ReplacementsP5MovedXY } from "../Replacements/p5/movedXY";
 
 enum PaintSketchStates {
   Loading,
@@ -26,6 +27,9 @@ type PaintSketchRawURLParams = {
 };
 
 class PaintSketch extends p5Thing {
+  private moved: ReplacementsP5MovedXY;
+  private replacements: p5Thing[];
+
   private style: PaintSketchStyle;
 
   private state: PaintSketchStates;
@@ -43,6 +47,9 @@ class PaintSketch extends p5Thing {
 
   constructor(sketch: p5) {
     super(sketch);
+
+    this.moved = new ReplacementsP5MovedXY(this.sketch);
+    this.replacements = [this.moved];
 
     this.camera = this.sketch.createVector(0, 0);
     this.zoom = 1;
@@ -117,6 +124,11 @@ class PaintSketch extends p5Thing {
 
   update() {
     super.update();
+
+    for (const replacement of this.replacements) {
+      replacement.update();
+    }
+
     this.style.update();
 
     switch (this.state) {
@@ -141,6 +153,11 @@ class PaintSketch extends p5Thing {
 
   draw() {
     super.draw();
+
+    for (const replacement of this.replacements) {
+      replacement.draw();
+    }
+
     this.style.draw();
 
     this.sketch.push();
@@ -160,10 +177,8 @@ class PaintSketch extends p5Thing {
     return true;
   }
 
-  mouseDragged(): boolean {
-    this.camera.add(
-      this.sketch.createVector(this.sketch.movedX, this.sketch.movedY)
-    );
+  mouseDragged(movedX: number, movedY: number): boolean {
+    this.camera.add(this.sketch.createVector(movedX, movedY));
     return false;
   }
 
@@ -249,12 +264,37 @@ const PaintSketchFactory = () => {
       resizeCanvas();
     };
 
+    let lastTouch: Touch | undefined = undefined;
+
     sketch.mousePressed = () => {
       return paintSketch?.mousePressed();
     };
 
-    sketch.mouseDragged = () => {
-      return paintSketch?.mouseDragged();
+    sketch.touchStarted = (event: TouchEvent) => {
+      if (event.touches.length === 1) {
+        lastTouch = event.touches[0];
+      }
+    };
+
+    sketch.mouseDragged = (event: MouseEvent) => {
+      return paintSketch?.mouseDragged(event.movementX, event.movementY);
+    };
+
+    sketch.touchMoved = (event: TouchEvent) => {
+      if (event.touches.length === 1) {
+        const thisTouch: Touch = event.touches[0];
+        if (lastTouch == undefined) {
+          lastTouch = thisTouch;
+        } else {
+          if (lastTouch.identifier === thisTouch.identifier) {
+            const movedX = thisTouch.clientX - lastTouch.clientX;
+            const movedY = thisTouch.clientY - lastTouch.clientY;
+            lastTouch = thisTouch;
+            return paintSketch?.mouseDragged(movedX, movedY);
+          }
+        }
+      }
+      return false;
     };
 
     sketch.mouseReleased = () => {
