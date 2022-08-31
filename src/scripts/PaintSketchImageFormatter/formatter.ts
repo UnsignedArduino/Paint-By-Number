@@ -67,6 +67,7 @@ export class PaintSketchImageFormatter {
     img.loadPixels();
     for (let x = 0; x < img.width; x++) {
       for (let y = 0; y < img.height; y++) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [r, g, b, _] = img.get(x, y);
         const c = this.sketch.color(r, g, b);
         if (!this.colorInList(c, allColors)) {

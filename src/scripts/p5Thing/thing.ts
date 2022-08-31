@@ -25,8 +25,10 @@ export class p5Thing {
     return this._height;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public update(): void {}
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public draw(): void {}
 }
 
