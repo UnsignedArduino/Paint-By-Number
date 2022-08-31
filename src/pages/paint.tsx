@@ -1,10 +1,11 @@
-import * as React from "react";
 import type { HeadFC } from "gatsby";
+import p5 from "p5";
+import * as React from "react";
+
 import HeadComponentFactory from "../components/Head";
 import LayoutComponent from "../components/Layout/layout";
-import SketchWrapper from "../components/SketchWrapper";
 import { NavbarLink } from "../components/Navbar";
-import p5 from "p5";
+import SketchWrapper from "../components/SketchWrapper";
 import PaintSketchFactory from "../scripts/PaintSketchFactory/factory";
 
 const currentPage: NavbarLink = -1;

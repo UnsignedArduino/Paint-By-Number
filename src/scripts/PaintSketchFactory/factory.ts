@@ -1,5 +1,6 @@
-import { navbarID } from "../../components/Navbar";
 import p5 from "p5";
+
+import { navbarID } from "../../components/Navbar";
 import PaintSketch from "../PaintSketch/paint";
 
 const PaintSketchFactory = () => {

@@ -1,5 +1,6 @@
-import * as React from "react";
 import type { HeadFC } from "gatsby";
+import * as React from "react";
+
 import HeadComponentFactory from "../components/Head";
 import LayoutComponent from "../components/Layout/layout";
 import { NavbarLink } from "../components/Navbar";

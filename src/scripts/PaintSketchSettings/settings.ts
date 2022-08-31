@@ -1,4 +1,5 @@
 import p5 from "p5";
+
 import p5Thing from "../p5Thing";
 
 const bgColor: string = "white";

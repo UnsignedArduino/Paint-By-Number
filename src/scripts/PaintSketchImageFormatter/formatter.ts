@@ -1,5 +1,5 @@
+import { applyPaletteSync, buildPaletteSync, utils } from "image-q";
 import p5 from "p5";
-import { buildPaletteSync, applyPaletteSync, utils } from "image-q";
 
 interface PaintSketchImageFormatterResult {
   image: p5.Image;

@@ -1,15 +1,16 @@
 import p5 from "p5";
+
 import p5Thing, {
+  RectangleXYWH,
   calculateBoundingBox,
   p5ImageThing,
-  RectangleXYWH,
 } from "../p5Thing";
-import PaintSketchStyle from "../PaintSketchSettings";
 import PaintSketchImageFormatter from "../PaintSketchImageFormatter";
 import {
   PaintSketchParams,
   PaintSketchParamsGetter,
 } from "../PaintSketchParams";
+import PaintSketchStyle from "../PaintSketchSettings";
 
 enum PaintSketchStates {
   Loading,
