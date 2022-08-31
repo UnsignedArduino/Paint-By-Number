@@ -87,7 +87,7 @@ export class PaintSketchImageFormatter {
   }
 
   private colorInList(color: p5.Color, colorList: p5.Color[]): boolean {
-    const cf: string = "#rrggbbaa";
+    const cf = "#rrggbbaa";
     const s: string = color.toString(cf);
     for (const c of colorList) {
       if (s == c.toString(cf)) {

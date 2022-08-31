@@ -10,11 +10,9 @@ import PaintSketchFactory from "../scripts/PaintSketchFactory/factory";
 
 const currentPage: NavbarLink = -1;
 
-const pageTitle: string = "";
+const pageTitle = "";
 
 const PaintPage = (): React.ReactElement => {
-  const sketchElementId: string = "paintSketch";
-
   const sketchFunc: (sketch: p5) => void = PaintSketchFactory();
 
   return (

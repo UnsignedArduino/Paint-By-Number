@@ -5,7 +5,7 @@ import NavbarComponent from "../Navbar";
 
 type LayoutComponentParameterType = {
   // TODO: Figure out type of children
-  children: any;
+  children: React.ReactNode;
   currentPage?: NavbarLink;
   putInDIV?: boolean;
 };

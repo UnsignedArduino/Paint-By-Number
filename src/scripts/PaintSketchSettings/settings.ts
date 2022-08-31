@@ -2,9 +2,9 @@ import p5 from "p5";
 
 import p5Thing from "../p5Thing";
 
-const bgColor: string = "white";
+const bgColor = "white";
 
-const zoomSensitivity: number = 0.1;
+const zoomSensitivity = 0.1;
 const zoomMin = 0.1;
 const zoomMax = 10;
 

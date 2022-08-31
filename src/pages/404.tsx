@@ -7,7 +7,7 @@ import { NavbarLink } from "../components/Navbar";
 
 const currentPage: NavbarLink = -1;
 
-const pageTitle: string = "Page not found";
+const pageTitle = "Page not found";
 
 const GalleryPage = (): React.ReactElement => {
   return (

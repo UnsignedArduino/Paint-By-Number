@@ -2,7 +2,7 @@ import type { HeadFC } from "gatsby";
 import * as React from "react";
 
 const HeadComponentFactory = (pageTitle?: string): HeadFC => {
-  return () => {
+  const headComponent = () => {
     return (
       <>
         {pageTitle === "" || pageTitle == undefined ? (
@@ -13,6 +13,9 @@ const HeadComponentFactory = (pageTitle?: string): HeadFC => {
       </>
     );
   };
+  headComponent.displayName = "headComponent";
+
+  return headComponent;
 };
 
 export default HeadComponentFactory;

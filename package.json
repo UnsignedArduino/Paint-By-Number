@@ -13,9 +13,10 @@
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
+    "prepare": "husky install",
     "format": "npx prettier --write .",
-    "typecheck": "tsc --noEmit",
-    "prepare": "husky install"
+    "lint": "npx eslint \"./src/**\"",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.5",
@@ -31,6 +32,11 @@
     "@types/p5": "^1.4.2",
     "@types/react": "^18.0.16",
     "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-react": "^7.31.1",
     "husky": "^8.0.1",
     "import-sort-style-module": "^6.0.0",
     "lint-staged": "^13.0.3",

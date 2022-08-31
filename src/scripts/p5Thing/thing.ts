@@ -25,9 +25,9 @@ export class p5Thing {
     return this._height;
   }
 
-  update(): void {}
+  public update(): void {}
 
-  draw(): void {}
+  public draw(): void {}
 }
 
 // For testing stuff
