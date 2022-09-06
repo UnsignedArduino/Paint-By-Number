@@ -2,6 +2,8 @@
 
 An online, no-account website that allows you to digitally paint by numbers!
 
+> Note: This is a work in progress!
+
 ## Install
 
 1. Install Gatsby stuff:
